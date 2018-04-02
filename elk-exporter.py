@@ -32,15 +32,18 @@ def main():
                                          http_auth=('elastic', 'elastic'),
                                          port=9200)
     today = datetime.now().strftime("%Y.%m.%d")
-    index_list = ['*'+today]
+    index_list = map(lambda x: x+today, ['*-api-gateway-*', '*-app-*', '*-credit-*', '*-passporter-*', '*-nginx-*',
+                                        '*-order-*', '*-loan-*', '*-debt-*', '*-openapi-gateway-*'])
     fields = ['_index', '@timestamp']
     data = {}
+    index = ''
     querystring = '(level:"ERROR" OR nginx_responsecode:404 OR nginx_responsecode:403 OR nginx_responsecode:5* OR NOT httpCode:2*)'
     querys = query.Query(querystring, 'now-10s', 'now').__str__()
     while 1:
         counter = 0
-        for index in index_list:
-            item_generator = queryf(client, index, querys)
+        for i in index_list:
+            print(i)
+            item_generator = queryf(client, i, querys)
             try:
                 item = next(item_generator)
                 item['_source'].update({
@@ -49,10 +52,12 @@ def main():
                 data = getfield(item, fields)
                 counter += 1
             except StopIteration:
-                break
-        index = data['_index']
-        print(counter, index)
-        elkErrorCount.labels(index).set(counter)
+                pass
+            finally:
+                global index
+                index = i
+                print(counter, index)
+                elkErrorCount.labels(index).set(counter)
         time.sleep(10)
 
 

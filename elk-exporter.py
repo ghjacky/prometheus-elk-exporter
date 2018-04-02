@@ -17,13 +17,13 @@ def queryf(client, index, query):
         yield hit
 
 
-def getfield(item, fields):
-    data = dict()
-    for field in fields:
-        data.update({
-            field: item['_source'].get(field)
-        })
-    return data
+# def getfield(item, fields):
+#     data = dict()
+#     for field in fields:
+#         data.update({
+#             field: item['_source'].get(field)
+#         })
+#     return data
 
 
 def main():
@@ -34,9 +34,7 @@ def main():
     today = datetime.now().strftime("%Y.%m.%d")
     index_list = map(lambda x: x+today, ['*-api-gateway-*', '*-app-*', '*-credit-*', '*-passporter-*', '*-nginx-*',
                                         '*-order-*', '*-loan-*', '*-debt-*', '*-openapi-gateway-*'])
-    fields = ['_index', '@timestamp']
-    data = {}
-    index = ''
+
     querystring = '(level:"ERROR" OR nginx_responsecode:404 OR nginx_responsecode:403 OR nginx_responsecode:5* OR NOT httpCode:2*)'
     querys = query.Query(querystring, 'now-10s', 'now').__str__()
     while 1:
@@ -49,12 +47,10 @@ def main():
                 item['_source'].update({
                     '_index': item['_index']
                 })
-                data = getfield(item, fields)
                 counter += 1
             except StopIteration:
                 pass
             finally:
-                global index
                 index = i
                 print(counter, index)
                 elkErrorCount.labels(index).set(counter)

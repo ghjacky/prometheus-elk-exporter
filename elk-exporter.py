@@ -31,7 +31,7 @@ def main():
     client = elasticsearch.Elasticsearch(hosts=['10.104.255.201'],
                                          http_auth=('elastic', 'elastic'),
                                          port=9200)
-    today = datetime.now().strftime("%Y.%m.%d")
+    # today = datetime.now().strftime("%Y.%m.%d")
     index_list = map(lambda x: x, ['*-api-gateway-*', '*-app-*', '*-credit-*', '*-passporter-*', '*-nginx-*',
                                         '*-order-*', '*-loan-*', '*-debt-*', '*-openapi-gateway-*'])
 

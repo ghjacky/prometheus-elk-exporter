@@ -35,6 +35,10 @@ def main():
                     se = Search(i, query_nginx, fields_nginx, client)
                     data = se.getdata()
                     for item in data:
+                        print(item.values()[0])
+                        # 过滤掉/api/v1/users/userid接口的请求
+                        if '/api/v1/users' in item.values()[0]:
+                            continue
                         vhost = item.get('nginx_vhost')
                         request = item.get('nginx_request_api')
                         counter = data.count(item)

@@ -32,7 +32,7 @@ def main():
                                          http_auth=('elastic', 'elastic'),
                                          port=9200)
     today = datetime.now().strftime("%Y.%m.%d")
-    index_list = map(lambda x: x+today, ['*-api-gateway-*', '*-app-*', '*-credit-*', '*-passporter-*', '*-nginx-*',
+    index_list = map(lambda x: x, ['*-api-gateway-*', '*-app-*', '*-credit-*', '*-passporter-*', '*-nginx-*',
                                         '*-order-*', '*-loan-*', '*-debt-*', '*-openapi-gateway-*'])
 
     querystring = '(level:"ERROR" OR nginx_responsecode:404 OR nginx_responsecode:403 OR nginx_responsecode:5* OR NOT httpCode:2*)'

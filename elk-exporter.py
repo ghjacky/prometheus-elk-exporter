@@ -25,7 +25,7 @@ def main():
     fields_nginx = ['nginx_vhost', 'nginx_request_api']
     fields_openapi = ['appId', 'url']
     querystring_nginx = '(nginx_responsecode:404 OR nginx_responsecode:403 OR nginx_responsecode:5*)'
-    querystring_openapi = '(fields.logtype:openapi-access AND NOT httpCode:2* AND NOT httpCode:0)'
+    querystring_openapi = '(fields.logtype:openapi-access AND NOT httpCode:2*)'
     query_nginx = query.Query(querystring_nginx, 'now-10s', 'now').__str__()
     query_openapi = query.Query(querystring_openapi, 'now-10s', 'now').__str__()
     while 1:

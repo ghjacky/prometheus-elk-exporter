@@ -24,7 +24,7 @@ def main():
     index_list = ['*-nginx-proxy-*', '*-order-access-*']
     fields_nginx = ['nginx_vhost', 'nginx_request_api']
     fields_openapi = ['appId', 'url']
-    querystring_nginx = '(nginx_responsecode:404 OR nginx_responsecode:403 OR nginx_responsecode:5*)'
+    querystring_nginx = '(nginx_responsecode:403 OR nginx_responsecode:5*)'
     querystring_nginx_ok = '(nginx_responsecode:200)'
     querystring_openapi = '(fields.logtype:openapi-access AND NOT httpCode:2*)'
     querystring_openapi_ok = '(fields.logtype:openapi-access AND httpCode:2*)'
@@ -40,6 +40,8 @@ def main():
                     se_ok = Search(i, query_nginx_ok, fields_nginx, client)
                     data = se.getdata()
                     data_ok = se_ok.getdata()
+                    print("[v1/api/elk-exporter: nginx data---] {0}".format(data))
+                    print("[v1/api/elk-exporter: nginx data_ok---] {0}".format(data_ok))
                     # 非200状态码的统计条数，并设置counter
                     for item in data:
                         # 过滤掉/api/v1/users/userid接口的请求
@@ -62,6 +64,8 @@ def main():
                     se_ok = Search(i, query_openapi_ok, fields_openapi, client)
                     data = se.getdata()
                     data_ok = se_ok.getdata()
+                    print("[v1/api/elk-exporter: openapi data---] {0}".format(data))
+                    print("[v1/api/elk-exporter: openapi data_ok---] {0}".format(data_ok))
                     # 非200状态码的统计条数，并设置counter
                     for item in data:
                         appId = item.get('appId')

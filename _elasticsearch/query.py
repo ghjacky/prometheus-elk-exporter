@@ -1,29 +1,27 @@
 # -*- coding: utf-8 -*-
-import elasticsearch
+import _elasticsearch
 
 
 class Query(object):
-    def __init__(self, querystring, starttime, endtime):
-        self.querystring = querystring
-        self.starttime = starttime
-        self.endtime = endtime
+    def __init__(self, ):
+        pass
 
-    def __str__(self):
+    def __query(self, field, querystring, starttime, endtime):
         qstring = {
             "query": {
                 "bool": {
                     "must": [
                         {
                             "query_string": {
-                                "default_field": "message",
-                                "query": self.querystring
+                                "default_field": field,
+                                "query": querystring
                             }
                         },
                         {
                             "range": {
                                 "@timestamp": {
-                                    "gte": self.starttime,
-                                    "lte": self.endtime,
+                                    "gte": starttime,
+                                    "lte": endtime,
                                 }
                             }
                         },
@@ -32,3 +30,7 @@ class Query(object):
             }
         }
         return qstring
+
+    def creatquery(self, field, querystring, starttime, endtime):
+        return self.__query(field, querystring, starttime, endtime)
+

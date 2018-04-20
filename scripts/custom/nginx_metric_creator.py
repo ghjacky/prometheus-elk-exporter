@@ -19,15 +19,15 @@ class NginxMetricCreator(object):
         count_total = res_total.get('count', 0)
 
         query_200 = Query().creatquery('message', '(nginx_responsecode:200)',
-                                         'now-5s', 'now')
+                                       'now-5s', 'now')
         res_200 = Search().getdata(self.index, query_200, self.fields,
-                                     self.es_client)
+                                   self.es_client)
         count_200 = res_200.get('count', 0)
 
         query_5xx = Query().creatquery('message', '(nginx_responsecode:5*)',
-                                         'now-5s', 'now')
+                                       'now-5s', 'now')
         res_5xx = Search().getdata(self.index, query_5xx, self.fields,
-                                     self.es_client)
+                                   self.es_client)
         count_5xx = res_5xx.get('count', 0)
 
         query_499 = Query().creatquery('message', '(nginx_responsecode:499)',

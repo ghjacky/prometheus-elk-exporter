@@ -36,7 +36,8 @@ class NginxMetrics(Metrics):
                                              self.metric_type)
         self.metrics['nginx_total'].add_sample('es_nginx_request_total_count',
                                                value=self.count_total,
-                                               labels={'search': 'total'})
+                                               labels={'search': 'total',
+                                                       })
         yield self.metrics['nginx_total']
 
         self.metrics['nginx_200'] = Metric('es_nginx_request_200_count',

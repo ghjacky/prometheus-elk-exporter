@@ -6,7 +6,7 @@ from time import sleep
 import elasticsearch
 from scripts import startor
 mylog = Logger(logfile='/tmp/elk_exporter.log', maxbytes=2*1024*1024,
-               backupcount=2)
+               backupcount=2).getlogger()
 
 
 def startserver(client, port, interval):
@@ -17,13 +17,16 @@ def startserver(client, port, interval):
     :return: 无
     """
     start_http_server(port)
+    mylog.info('Server started!')
     while 1:
         # set metrics here
+        mylog.info('Start creating nginx metrics!')
         startor.nginx(client)
         sleep(interval)
 
 
 if __name__ == '__main__':
+    mylog.info('Server starting.....')
     es_client = elasticsearch.Elasticsearch(hosts=['10.104.255.201'],
                                             http_auth=('elastic',
                                                        'elastic'), port=9200)

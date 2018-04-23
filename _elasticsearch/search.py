@@ -16,7 +16,7 @@ class Search(object):
             count = data['hits']['total']
             data = data['hits']['hits']
         except ConnectionTimeout:
-            mylog.warning('Es连接失败！')
+            mylog.error('Es连接失败！')
             count = -1
             data = []
         for d in data:
@@ -26,7 +26,7 @@ class Search(object):
                     f: d.get('_source').get(f)
                 })
             self.res.append(item)
-        print({'data': self.res, 'count': count})
+        mylog.debug({'data': self.res, 'count': count})
         return {'data': self.res, 'count': count}
 
 

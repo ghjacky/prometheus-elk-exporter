@@ -15,7 +15,7 @@ class NginxMetricCreator(object):
         self.es_client = es_client
         self.data = dict()
 
-    def create(self, vhosts):
+    def create(self, vhosts, interval):
         """
         根据vhosts在es中检索相应数据（vhost:['total', 200, 301, 302, 304, 403, 404,
         499, 500, 502, 504]）
@@ -23,10 +23,11 @@ class NginxMetricCreator(object):
         :param vhosts: vhost列表
         :return:
         """
+        timestr = 'now-'+str(interval)+'s'
         for vhost in vhosts:
             query_total = Query().creatquery('message',
                                              '(* AND nginx_vhost:' + vhost + ')',
-                                             'now-5s', 'now')
+                                             timestr, 'now')
             res_total = Search().getdata(self.index, query_total, self.fields,
                                          self.es_client)
             count_total = res_total.get('count', 0)
@@ -34,7 +35,7 @@ class NginxMetricCreator(object):
             query_200 = Query().creatquery('message',
                                            '(nginx_responsecode:200  AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_200 = Search().getdata(self.index, query_200, self.fields,
                                        self.es_client)
             count_200 = res_200.get('count', 0)
@@ -42,7 +43,7 @@ class NginxMetricCreator(object):
             query_301 = Query().creatquery('message',
                                            '(nginx_responsecode:301  AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_301 = Search().getdata(self.index, query_301, self.fields,
                                        self.es_client)
             count_301 = res_301.get('count', 0)
@@ -50,7 +51,7 @@ class NginxMetricCreator(object):
             query_302 = Query().creatquery('message',
                                            '(nginx_responsecode:302  AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_302 = Search().getdata(self.index, query_302, self.fields,
                                        self.es_client)
             count_302 = res_302.get('count', 0)
@@ -58,7 +59,7 @@ class NginxMetricCreator(object):
             query_304 = Query().creatquery('message',
                                            '(nginx_responsecode:304  AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_304 = Search().getdata(self.index, query_304, self.fields,
                                        self.es_client)
             count_304 = res_304.get('count', 0)
@@ -66,7 +67,7 @@ class NginxMetricCreator(object):
             query_500 = Query().creatquery('message',
                                            '(nginx_responsecode:500 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_500 = Search().getdata(self.index, query_500, self.fields,
                                        self.es_client)
             count_500 = res_500.get('count', 0)
@@ -74,7 +75,7 @@ class NginxMetricCreator(object):
             query_502 = Query().creatquery('message',
                                            '(nginx_responsecode:502 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_502 = Search().getdata(self.index, query_502, self.fields,
                                        self.es_client)
             count_502 = res_502.get('count', 0)
@@ -82,7 +83,7 @@ class NginxMetricCreator(object):
             query_504 = Query().creatquery('message',
                                            '(nginx_responsecode:504 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_504 = Search().getdata(self.index, query_504, self.fields,
                                        self.es_client)
             count_504 = res_504.get('count', 0)
@@ -90,7 +91,7 @@ class NginxMetricCreator(object):
             query_499 = Query().creatquery('message',
                                            '(nginx_responsecode:499 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_499 = Search().getdata(self.index, query_499, self.fields,
                                        self.es_client)
             count_499 = res_499.get('count', 0)
@@ -98,7 +99,7 @@ class NginxMetricCreator(object):
             query_404 = Query().creatquery('message',
                                            '(nginx_responsecode:404 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_404 = Search().getdata(self.index, query_404, self.fields,
                                        self.es_client)
             count_404 = res_404.get('count', 0)
@@ -106,7 +107,7 @@ class NginxMetricCreator(object):
             query_403 = Query().creatquery('message',
                                            '(nginx_responsecode:403 AND '
                                            'nginx_vhost:' + vhost + ')',
-                                           'now-5s', 'now')
+                                           timestr, 'now')
             res_403 = Search().getdata(self.index, query_403, self.fields,
                                        self.es_client)
             count_403 = res_403.get('count', 0)

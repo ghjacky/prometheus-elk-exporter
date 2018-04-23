@@ -19,7 +19,7 @@ def startserver(client, port, interval):
     while 1:
         # set metrics here
         mylog.info('Start creating nginx metrics!')
-        startor.nginx(client)
+        startor.nginx(client, interval)
         sleep(interval)
 
 
@@ -29,6 +29,6 @@ if __name__ == '__main__':
                                             http_auth=('elastic',
                                                        'elastic'), port=9200)
     server_port = 9102
-    interval = 5
+    interval = 30
     startserver(es_client, server_port, interval)
 

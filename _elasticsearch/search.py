@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from elasticsearch.exceptions import ConnectionTimeout
+from logger import mylog
 
 
 class Search(object):
@@ -15,6 +16,7 @@ class Search(object):
             count = data['hits']['total']
             data = data['hits']['hits']
         except ConnectionTimeout:
+            mylog.warning('Es连接失败！')
             count = -1
             data = []
         for d in data:

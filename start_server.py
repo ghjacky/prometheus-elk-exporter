@@ -5,13 +5,11 @@ from prometheus_client import start_http_server
 from time import sleep
 import elasticsearch
 from scripts import startor
-mylog = Logger(logfile='/tmp/elk_exporter.log', maxbytes=2*1024*1024,
-               backupcount=2).getlogger()
+from logger import mylog
 
 
 def startserver(client, port, interval):
     """
-
     :param port: 服务监听端口
     :param interval: 服务检索间隔时间
     :return: 无

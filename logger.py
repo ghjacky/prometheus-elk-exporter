@@ -22,5 +22,5 @@ class Logger(object):
         return self.__mylog
 
 
-mylog = Logger(logfile='/tmp/elk_exporter.log', maxbytes=2*1024*1024,
+mylog = Logger(logfile='/var/log/elk_exporter.log', maxbytes=2*1024*1024,
                backupcount=2).getlogger()

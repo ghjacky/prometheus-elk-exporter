@@ -28,9 +28,13 @@ class NginxMetrics(Metrics):
                     'c.com': {'count_200': '200', 'count_3xx': '300'}
                 }
     """
+
     def __init__(self, data):
         super(NginxMetrics, self).__init__()
         self.data = data
+        self.kibana_url_500 = 'http://kibana.internal.xiaodaijl.cn/' \
+                              'app/kibana#/discover/' \
+                              'cab07790-46ce-11e8-8a78-9507fadd057e'
 
     def collect(self):
         """
@@ -41,7 +45,7 @@ class NginxMetrics(Metrics):
             name='es_nginx_request_count',
             documentation='Count of each response code search for the '
                           'Nginx index',
-            labels=['res_code', 'vhost']
+            labels=['res_code', 'vhost', 'kibana_url']
         )
         for vhost in self.data.keys():
             count_total = self.data.get(vhost).get('count_total')
@@ -89,15 +93,15 @@ class NginxMetrics(Metrics):
             )
             self.metrics['nginx'].add_metric(
                 value=count_500,
-                labels=['500', vhost]
+                labels=['500', vhost, self.kibana_url_500]
             )
             self.metrics['nginx'].add_metric(
                 value=count_502,
-                labels=['502', vhost]
+                labels=['502', vhost, self.kibana_url_500]
             )
             self.metrics['nginx'].add_metric(
                 value=count_504,
-                labels=['504', vhost]
+                labels=['504', vhost, self.kibana_url_500]
             )
         yield self.metrics['nginx']
 
